@@ -1,0 +1,4 @@
+"0","gauge(round(median(ctd$salinity), digits = 2),"
+"0","      min = 34, max = 36, "
+"0","      gaugeSectors(success = c(34,34.75), warning = c(34.75,35.25), danger = c(35.25,36), "
+"0","                   colors = c(""green"", ""Orange"", ""red"")))"

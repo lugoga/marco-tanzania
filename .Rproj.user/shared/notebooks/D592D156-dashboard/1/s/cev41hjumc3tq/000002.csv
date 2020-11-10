@@ -1,0 +1,4 @@
+"0","gauge(round(median(ctd$oxygen), digits = 2),"
+"0","      min = 2, max = 8, "
+"0","      gaugeSectors(success = c(6,8), warning = c(4,6), danger = c(2,4), "
+"0","                   colors = c(""green"", ""Orange"", ""red"")))"

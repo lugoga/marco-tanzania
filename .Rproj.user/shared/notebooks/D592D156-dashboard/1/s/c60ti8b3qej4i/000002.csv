@@ -1,0 +1,4 @@
+"0","gauge(round(median(ctd$temperature), digits = 2),"
+"0","      min = 20, max = 28, "
+"0","      gaugeSectors(success = c(20,24), warning = c(25,26), danger = c(27,28), "
+"0","                   colors = c(""green"", ""Orange"", ""red"")))"

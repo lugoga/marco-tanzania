@@ -1,0 +1,119 @@
+---
+title: "Untitled"
+author: "Masumbuko Semba"
+date: "11/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+require(wior)
+require(tidyverse)
+require(metR, lib.loc = "c:/Users/Semba/Documents/R/new-ver/")
+```
+```{r}
+mycolor2 = c("#040ED8", "#2050FF", "#4196FF", "#6DC1FF", "#86D9FF", "#9CEEFF", "#AFF5FF", "#CEFFFF",
+"#FFFE47", "#FFEB00", "#FFC400", "#FF9000", "#FF4800", "#FF0000", "#D50000", "#9E0000")
+mycolor = c("#7f007f", "#0000ff",  "#007fff", "#00ffff", "#00bf00", "#7fdf00",
+"#ffff00", "#ff7f00", "#ff3f00", "#ff0000", "#bf0000")
+wes = wesanderson::wes_palette(name = "Zissou1",
+n = 5, type = "continuous")
+
+
+```
+
+
+```{r}
+sst = get_sstMUR(lon.min = 38.5, lon.max = 40,lat.min = -6.5, lat.max = -4.5, t1 = "2020-11-04", t2 = "2020-11-07", level = 1)
+
+chl = get_chlModis(lon.min = 38.5, lon.max = 40,lat.min = -6.5, lat.max = -4.5, t1 = "2020-11-04", t2 = "2020-11-07", level = 1)
+```
+
+```{r}
+africa = sf::st_read("e:/Data Manipulation/Deep sea/data/africa.shp", quiet = TRUE)
+```
+
+
+```{r, fig.width=10}
+ggplot()+
+  geom_tile(data = sst %>% filter(latitude >=-5.45), aes(x = longitude, y = latitude, fill = analysed_sst))+
+  geom_sf(data = africa, color = 1, size = 0.25) +
+  coord_sf(xlim = c(38.86,39.9), ylim = c(-5.4,-4.6)) +
+  scale_fill_gradientn(colours = mycolor, breaks = seq(26.7,28.6,0.2),
+                       guide = guide_colorbar(title.position = "right",
+                                              title = expression(Sea~surface~temperature~(degree*C)),
+                                              title.theme = element_text(angle = 90),
+                                              title.hjust = 0.5,
+                                              barwidth = unit(0.45, "cm"),
+                                              barheight = unit(8, "cm")))+
+  facet_wrap(~time)+
+  scale_x_continuous(breaks = seq(38.9,39.8, length.out = 4) %>% round(2))+
+  scale_y_continuous(breaks = seq(-5.4,-4.6, length.out = 4) %>% round(2))+
+  theme_bw()+
+  theme(axis.title = element_blank(), strip.background = element_blank())
+
+ggsave("sst_pemba.png", dpi = 300)
+```
+
+
+```{r, fig.width=10}
+ggplot()+
+  geom_tile(data = chl , aes(x = longitude, y = latitude, fill = chlorophyll))+
+  geom_sf(data = africa, color = 1, size = 0.25) +
+  coord_sf(xlim = c(38.86,39.9), ylim = c(-6.4,-4.6)) +
+  scale_fill_gradientn(colours = mycolor, breaks = seq(26.7,28.6,0.2),
+                       guide = guide_colorbar(title.position = "right",
+                                              title = expression(Sea~surface~temperature~(degree*C)),
+                                              title.theme = element_text(angle = 90),
+                                              title.hjust = 0.5,
+                                              barwidth = unit(0.45, "cm"),
+                                              barheight = unit(8, "cm")))+
+  facet_wrap(~time)+
+  scale_x_continuous(breaks = seq(38.9,39.8, length.out = 4) %>% round(2))+
+  scale_y_continuous(breaks = seq(-5.4,-4.6, length.out = 4) %>% round(2))+
+  theme_bw()+
+  theme(axis.title = element_blank(), strip.background = element_blank())
+
+ggsave("sst_pemba.png", dpi = 300)
+```
+
+
+
+```{r, fig.width=10}
+
+ggplot()+
+  geom_contour_fill(data = sst %>% filter(latitude >=-5.45 & !is.na(temperature)), 
+                    aes(x = longitude, y = latitude, fill = analysed_sst), bins = 100)+
+  geom_sf(data = africa, color = 1, size = 0.25) +
+  coord_sf(xlim = c(38.86,39.9), ylim = c(-5.4,-4.6)) +
+  scale_fill_gradientn(colours = mycolor, breaks = seq(26.7,28.6,0.2),
+                       guide = guide_colorbar(title.position = "right",
+                                              title = expression(Sea~surface~temperature~(degree*C)),
+                                              title.theme = element_text(angle = 90),
+                                              title.hjust = 0.5,
+                                              barwidth = unit(0.45, "cm"),
+                                              barheight = unit(8, "cm")))+
+  facet_wrap(~time)+
+  scale_x_continuous(breaks = seq(38.9,39.8, length.out = 4) %>% round(2))+
+  scale_y_continuous(breaks = seq(-5.4,-4.6, length.out = 4) %>% round(2))+
+  theme_bw()+
+  theme(axis.title = element_blank(), strip.background = element_blank())
+
+ggsave("sst_pemba.png", dpi = 300)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

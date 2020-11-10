@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+author: "Masumbuko Semba"
+date: "10/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+require(sf)
+require(tidyverse)
+
+```
+
+```{r}
+gps.files = dir("Map view/", pattern = ".gpx", recursive = TRUE, full.names = TRUE)
+```
+
+```{r}
+grounds = gps.files[1] %>% st_read(quiet = TRUE) %>% select(time)
+
+for (i in 2:length(gps.files)){
+  
+  where = gps.files[i] %>% st_read(quiet = TRUE) %>% select(time)
+  
+  grounds = grounds %>%
+    rbind(where)
+  
+  
+}
+
+
+
+# grounds %>% leaflet::leaflet() %>% leaflet::addMarkers()
+```
+
+
+```{r}
+tanga.grounds = grounds %>% st_drop_geometry() %>% 
+  bind_cols(grounds %>% st_coordinates() %>% as_tibble() %>% rename(longitude = 1, latitude = 2)) %>%
+   filter(latitude > -5.7 & latitude < -4.5 & longitude > 38.6 & longitude < 39.7)
+
+
+tanga.grounds %>% skimr::skim()
+  
+  
+  
+  tanga.grounds %>% 
+  leaflet::leaflet() %>%
+  leaflet::addMarkers(lng = ~longitude, lat = ~latitude, popup = ~time)
+  
+  
+  mafia = grounds %>% st_drop_geometry() %>% 
+  bind_cols(grounds %>% st_coordinates() %>% as_tibble() %>% 
+              rename(longitude = 1, latitude = 2)) %>%
+   filter(latitude > -8 & latitude < -6.5 & longitude > 38. & longitude < 40)
+  
+ mafia  %>% 
+  leaflet::leaflet() %>%
+  leaflet::addMarkers(lng = ~longitude, lat = ~latitude, popup = ~time)
+  
+```
+

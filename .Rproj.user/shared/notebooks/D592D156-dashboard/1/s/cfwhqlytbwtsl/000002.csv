@@ -1,0 +1,1 @@
+"0","ctd = wior::cnv_tibble(""e:/Data Manipulation/ctd_bongo2017/Converted Data/Stn014.cnv"", interval = 10) %>% filter(pressure <= 100)"

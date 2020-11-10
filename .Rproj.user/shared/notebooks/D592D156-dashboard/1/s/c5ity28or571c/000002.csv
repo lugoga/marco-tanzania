@@ -1,0 +1,4 @@
+"0",""
+"0",""
+"0","gps.files = dir(""e:/Data Manipulation/pfz/Map view/"", "
+"0","                pattern = "".gpx"", recursive = TRUE, full.names = TRUE)"

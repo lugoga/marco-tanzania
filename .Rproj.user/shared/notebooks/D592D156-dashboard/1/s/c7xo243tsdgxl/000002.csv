@@ -1,0 +1,11 @@
+"0","ctd1 %>%"
+"0","  select(c(pressure, temperature, salinity, oxygen, conductivity, fluorescence, turbidity = turbidity2)) %>% "
+"0","  pivot_longer(cols = temperature:turbidity, values_to = ""data"", names_to = ""variable"") %>% plot_ly( x = ~data, y = ~pressure, split = ~variable) %>% "
+"0","  add_paths() %>%"
+"0","  layout(xaxis = list(title = ""Values"", side = ""top""),"
+"0","         yaxis = list(title = ""Pressure [m]"", range = c(1200,0), autorange = ""reverse""))"
+"2","`arrange_()` is deprecated as of dplyr 0.7.0.
+Please use `arrange()` instead.
+See vignette('programming') for more help
+[90mThis warning is displayed once every 8 hours.[39m
+[90mCall `lifecycle::last_warnings()` to see where this warning was generated.[39m"

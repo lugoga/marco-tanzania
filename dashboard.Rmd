@@ -1,0 +1,401 @@
+---
+title: "MarCoSouth-Tanzania"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: cerulean
+    orientation: rows
+    vertical_layout: fill
+    social: ["github","menu"]
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+require(sf)
+require(tidyverse)
+require(DT)
+require(plotly)
+require(wior)
+require(leaflet)
+require(mapview)
+library(widgetframe)
+
+
+
+```
+
+```{r}
+## define my colors that I will use
+colors = c("blue", "#FFC125", "darkgreen", "darkorange")
+
+ctd1 = wior::cnv_tibble("e:/Data Manipulation/ctd_bongo2017/Converted Data/Stn001.cnv", interval = 10) 
+
+
+ctd = ctd1 %>% filter(pressure <= 100)
+
+# ctd %>% skimr::skim()
+
+```
+
+# Nungwi
+
+## Row
+
+### *Temperature*
+
+```{r}
+gauge(round(median(ctd$temperature), digits = 2),
+      min = 20, max = 28, 
+      gaugeSectors(success = c(20,24), warning = c(25,26), danger = c(27,28), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Oxygen*
+
+```{r}
+gauge(round(median(ctd$oxygen), digits = 2),
+      min = 2, max = 8, 
+      gaugeSectors(success = c(6,8), warning = c(4,6), danger = c(2,4), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *fluorescence*
+
+```{r}
+gauge(round(median(ctd$fluorescence), digits = 2),
+      min = 0, max = 1.0, 
+      gaugeSectors(success = c(0.25,1), warning = c(0.1,0.25), danger = c(0,0.1), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Salinity*
+
+```{r}
+gauge(round(median(ctd$salinity), digits = 2),
+      min = 34, max = 36, 
+      gaugeSectors(success = c(34,34.75), warning = c(34.75,35.25), danger = c(35.25,36), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Turbidity*
+
+```{r}
+gauge(round(max(ctd$turbidity2), digits = 2),
+      min = 0, max = 1, 
+      gaugeSectors(success = c(0.0,0.25), warning = c(.25,.6), danger = c(.61,1), 
+                   colors = c("green", "Orange", "red")))
+```
+
+
+### *Wind Speed*
+
+```{r}
+gauge(value = 11,
+      min = 0, max = 20, 
+      gaugeSectors(success = c(0,7), warning = c(8,14), danger = c(15,30), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Current Speed*
+
+```{r}
+gauge(value = 0.4,
+      min = 0, max = 1.5, 
+      gaugeSectors(success = c(0,.5), warning = c(.6,1), danger = c(1.1,1.60), 
+                   colors = c("green", "Orange", "red")))
+```
+
+Row
+---------------
+### Profiles
+```{r}
+ctd1 %>%
+  select(c(pressure, temperature, salinity, oxygen, conductivity, fluorescence, turbidity = turbidity2)) %>% 
+  pivot_longer(cols = temperature:turbidity, values_to = "data", names_to = "variable") %>% plot_ly( x = ~data, y = ~pressure, split = ~variable) %>% 
+  add_paths() %>%
+  layout(xaxis = list(title = "Values", side = "top"),
+         yaxis = list(title = "Pressure [m]", range = c(1200,0), autorange = "reverse"))
+  
+```
+
+
+# Off-Kimbiji
+
+```{r}
+ctd = wior::cnv_tibble("e:/Data Manipulation/ctd_bongo2017/Converted Data/Stn014.cnv", interval = 10) %>% filter(pressure <= 100)
+```
+
+## Row
+
+### *Temperature*
+
+```{r}
+gauge(round(median(ctd$temperature), digits = 2),
+      min = 20, max = 28, 
+      gaugeSectors(success = c(20,24), warning = c(25,26), danger = c(27,28), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Oxygen*
+
+```{r}
+gauge(round(median(ctd$oxygen), digits = 2),
+      min = 2, max = 8, 
+      gaugeSectors(success = c(6,8), warning = c(4,6), danger = c(2,4), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *fluorescence*
+
+```{r}
+gauge(round(median(ctd$fluorescence), digits = 2),
+      min = 0, max = 1.0, 
+      gaugeSectors(success = c(0.25,1), warning = c(0.1,0.25), danger = c(0,0.1), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Salinity*
+
+```{r}
+gauge(round(median(ctd$salinity), digits = 2),
+      min = 34, max = 36, 
+      gaugeSectors(success = c(34,34.75), warning = c(34.75,35.25), danger = c(35.25,36), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Turbidity*
+
+```{r}
+gauge(round(max(ctd$turbidity2), digits = 2),
+      min = 0, max = 1, 
+      gaugeSectors(success = c(0.0,0.25), warning = c(.25,.6), danger = c(.61,1), 
+                   colors = c("green", "Orange", "red")))
+```
+
+
+### *Wind Speed*
+
+```{r}
+gauge(value = 11,
+      min = 0, max = 20, 
+      gaugeSectors(success = c(0,7), warning = c(8,14), danger = c(15,30), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Current Speed*
+
+```{r}
+gauge(value = 0.4,
+      min = 0, max = 1.5, 
+      gaugeSectors(success = c(0,.5), warning = c(.6,1), danger = c(1.1,1.60), 
+                   colors = c("green", "Orange", "red")))
+```
+
+Row
+--------------------------
+
+### Data visible
+```{r}
+africa = spData::world %>% filter(continent == "Africa") %>% st_sf()
+
+require(crosstalk)
+
+bscols(
+  # plot_mapbox(data = africa, text = ~name_long, hoverinfo = "text"),
+  DT::datatable(ctd )
+)
+
+
+ctd  %>% 
+  filter(pressure <= 500) %>% 
+  select(pressure, temperature, conductivity, fluorescence, oxygen, salinity, turbidity)%>%
+  mutate_if(is.numeric, round, 2) %>% 
+  DT::datatable()
+```
+
+
+
+# Mtwara
+
+```{r}
+ctd = wior::cnv_tibble("e:/Data Manipulation/ctd_bongo2017/Converted Data/Stn032.cnv", interval = 10) %>% filter(pressure <= 100)
+```
+
+## Row
+
+### *Temperature*
+
+```{r}
+gauge(round(median(ctd$temperature), digits = 2),
+      min = 20, max = 28, 
+      gaugeSectors(success = c(20,24), warning = c(25,26), danger = c(27,28), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Oxygen*
+
+```{r}
+gauge(round(median(ctd$oxygen), digits = 2),
+      min = 2, max = 8, 
+      gaugeSectors(success = c(6,8), warning = c(4,6), danger = c(2,4), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *fluorescence*
+
+```{r}
+gauge(round(median(ctd$fluorescence), digits = 2),
+      min = 0, max = 1.0, 
+      gaugeSectors(success = c(0.25,1), warning = c(0.1,0.25), danger = c(0,0.1), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Salinity*
+
+```{r}
+gauge(round(median(ctd$salinity), digits = 2),
+      min = 34, max = 36, 
+      gaugeSectors(success = c(34,34.75), warning = c(34.75,35.25), danger = c(35.25,36), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Turbidity*
+
+```{r}
+gauge(round(max(ctd$turbidity2), digits = 2),
+      min = 0, max = 1, 
+      gaugeSectors(success = c(0.0,0.25), warning = c(.25,.6), danger = c(.61,1), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Wind Speed*
+
+```{r}
+gauge(value = 11,
+      min = 0, max = 20, 
+      gaugeSectors(success = c(0,7), warning = c(8,14), danger = c(15,30), 
+                   colors = c("green", "Orange", "red")))
+```
+
+### *Current Speed*
+
+```{r}
+gauge(value = 0.4,
+      min = 0, max = 1.5, 
+      gaugeSectors(success = c(0,.5), warning = c(.6,1), danger = c(1.1,1.60), 
+                   colors = c("green", "Orange", "red")))
+```
+
+Row
+---------------------
+
+### Sea Surface temperature
+```{r}
+
+```
+
+### Chlorophyll-*a*
+```{r}
+
+```
+
+Fishing Events
+=================
+
+```{r}
+pemba.bound = st_read("simple-features/pemba_bound.shp", quiet = TRUE)
+```
+
+```{r}
+
+
+gps.files = dir("e:/Data Manipulation/pfz/Map view/", 
+                pattern = ".gpx", recursive = TRUE, full.names = TRUE)
+```
+
+```{r}
+grounds = gps.files[1] %>% st_read(quiet = TRUE) %>% select(time)
+
+for (i in 2:length(gps.files)){
+  
+  where = gps.files[i] %>% st_read(quiet = TRUE) %>% select(time)
+  
+  grounds = grounds %>%
+    rbind(where)
+  
+  
+}
+
+fishing.events = grounds %>% wior::sf_crop(pemba.bound)
+```
+
+```{r, eval=TRUE}
+
+
+leaflet(data = fishing.events) %>%
+  # addTiles() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  leaflet::addCircleMarkers(label=~time,
+                            weight = 3, 
+                            radius=10, 
+                            color="#ffa500")
+```
+
+PFZ
+================
+```{r}
+pfz = st_read("e:/Data Manipulation/pfz/shapefile/sst_fronts_2015_2020.shp", quiet = TRUE)
+```
+
+
+```{r}
+pfz.pemba = wior::sf_crop(sf_feature = pfz, polygon_sf = pemba.bound)
+
+
+# plot_ly(data = pfz.pemba %>% sample_n(size = 35))
+
+leaflet(data = pfz.pemba %>% filter(date > lubridate::dmy(01012020))) %>%
+  # addTiles() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(label = ~date,
+              color = "#444444",
+              weight = 1,
+              smoothFactor = 0.5,
+              opacity = 1.0,
+              fillOpacity = 0.5,
+              highlightOptions = highlightOptions(color = "white",
+                                                  weight = 2,
+                                                  bringToFront = TRUE)) 
+
+#%>%   frameWidget()
+
+
+```
+
+
+### shared
+```{r, eval=FALSE}
+require(crosstalk)
+require(d3s)
+
+shared_quakes <- SharedData$new(quakes[sample(nrow(quakes), 100),])
+bscols(
+  leaflet(shared_quakes, width = "100%", height = 300) %>%
+    addTiles() %>%
+    addMarkers(),
+  d3scatter(shared_quakes, ~depth, ~mag, width = "100%", height = 300)
+)
+```
+
+```{r, eval=FALSE}
+shared = SharedData$new(fishing.events)
+
+bscols(
+  leaflet(shared, width = "100%", height = 300) %>%
+    addTiles() %>%
+    addMarkers(),
+  d3scatter(shared_quakes, ~depth, ~mag, width = "100%", height = 300)
+)
+```
+
+
+

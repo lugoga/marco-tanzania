@@ -1,0 +1,32 @@
+{
+    "id": "D14422AB",
+    "path": "E:/Data Manipulation/marcosouth/marcoTanzania/dashboard.Rmd",
+    "project_path": "dashboard.Rmd",
+    "type": "r_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1604950298629.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "tempName": "Untitled3",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "374,14",
+        "scrollLine": "372",
+        "last_setup_crc32": "3A30EAB67c3f3042",
+        "rmdVisualMode": "false",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "1",
+        "rmdVisualModeLocation": "1744:0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1604990255,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1604990264174,
+    "read_only": false,
+    "read_only_alternatives": []
+}
